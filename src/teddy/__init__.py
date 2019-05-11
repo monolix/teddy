@@ -3,73 +3,37 @@
 # This software is released under the MIT License.
 # https://opensource.org/licenses/MIT
 
+from .section import Section
+from .utils import fail
+
+from pkg_resources import resource_string
+from jinja2 import Template
+
+__all__ = ["Teddy", "Section"]
+
 class Teddy:
-    def __init__(self, name, description, author, long_description=None):
+    def __init__(self, name, description, \
+        author, long_description=None):
         self.name = name
         self.description = description
         self.long_description = long_description
         self.author = author
+
+        self.sections = []
     
-        self._sections = {}
-        self._output = ""
+    def add_section(self, *sections):
+        for section in sections:
+            if not isinstance(section, Section):
+                fail("Cannot add a non-section.")
+            
+            self.sections.append(section)
 
-    def _create_section(self, name):
-        self._sections[str(name)] = {}
-
-    def _check_section(self, name):
-        if str(name) in self._sections:
-            return True
+    def dump(self, filename="docs.html", template="default.html"):
+        path = "/".join(("templates", template))
+        resource = resource_string(__name__, path)
         
-        return False
-
-    def _add_to_section(self, section, name, info, returns, example):
-        self._sections[str(section)][str(name)] = {
-            "info": info,
-            "returns": returns,
-            "example": example
-        }
-
-    def __call__(self, info="A little bunny jumping down the hill", name=None, returns=None, section="Main"):
-        
-        if not self._check_section(section): self._create_section(section)
-
-        def decorator(func):
-            self._add_to_section(
-                section, 
-                func.__name__ if name is None else name, 
-                info, 
-                returns, 
-                func.__doc__
-            )
-            return func
-        return decorator
-
-    def create(self):
-        self._output = ("# {name}\n"
-        "##### by _{author}_\n"
-        "{description}\n"
-        "{long_description}").format(
-            name=self.name,
-            author=self.author,
-            description=self.description,
-            long_description="" if self.long_description is None else self.description + "\n\n"
-        )
-
-        for section, contents in self._sections.items():
-            self._output += "## {}\n".format(section)
-
-            for name, info in contents.items():
-                self._output += "### `{}`\n".format(name)
-                self._output += "> {}\n\n".format(info["info"])
-                self._output += "Returns: **{}**\n".format(info["returns"])
-                if info["example"] is not None:
-                    self._output += "\n**Example**\n"
-                    self._output += "```python"
-                    self._output += info["example"]
-                    self._output += "\n```\n"
-
-    def dump(self, filename="docs.md"):
-        self.create()
+        template_ = Template(resource.decode("utf-8"))
+        templated = template_.render(teddy=self)
 
         with open(filename, "w") as f:
-            f.write(self._output)
+            f.write(templated)

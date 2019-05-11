@@ -1,0 +1,33 @@
+<html lang="en">
+    <head>
+        <link rel="stylesheet" href="https://watercss.netlify.com/dist/dark.css" />
+        <title>{{ teddy.name }}</title>
+    </head>
+    <body>
+        <h1>{{ teddy.name }}</h1>
+        <label>{{ teddy.description }} - by <i>{{ teddy.author }}</i></label>
+        <hr />
+    {% for section in teddy.sections %}
+        <section id="{{ section.name.lower() }}">
+            <h2>{{ section.name }}</h2>
+            <p>{{ section.description }}</p>
+
+        {% for function in section.functions %}
+            <h3><code>{{ function.name }}</code></h3>
+            <label>{{ function.description }}</label>
+            <i><small>- returns {{ function.returns }}</small></i>
+            {% if function.example %}
+            <pre>
+                <code>{{ function.example }}</code>
+            </pre>
+            {% endif %}
+        {% endfor %}
+        </section>
+    {% endfor %}
+    </body>
+    <footer>
+        <small>
+            Docs generated with <a target="_blank" href="https://github.com/monolix/teddy">Teddy</a>.
+        </small>
+    </footer>
+</html>
