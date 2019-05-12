@@ -12,10 +12,10 @@
 **Teddy** is a lightweight in-code doc generator for Python, based on [Jinja Templates](http://jinja.pocoo.org/).
 
 ## Install
-To install it, clone the repo use `pip`.
+To install it, clone the repo and use `pip`.
 ```bash
 git clone https://github.com/monolix/teddy
-cd src
+cd teddy/src
 python3 setup.py install
 ```
 
