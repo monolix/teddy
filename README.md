@@ -46,26 +46,34 @@ ops = Section("Operations", "Operations the calculator can do.")
 
 @ops("Adds two numbers", returns=float)
 def add(a, b):
-    """>>> add(5, 4) 
-9.0"""
+    """
+    >>> add(5, 4) 
+    9.0
+    """
     return float(a + b)
 
 @ops("Subtracts two numbers", returns=float)
 def sub(a, b):
-    """>>> sub(5, 2)
-3.0"""
+    """
+    >>> sub(5, 2)
+    3.0
+    """
     return float(a - b)
 
 @ops("Multiplies two numbers", returns=float)
 def mult(a, b):
-    """>>> mult(7, 8)
-56.0"""
+    """
+    >>> mult(7, 8)
+    56.0
+    """
     return float(a * b)
 
 @ops("Divides two numbers", returns=float)
 def div(a, b):
-    """>>> mult(8, 4)
-2.0"""
+    """
+    >>> div(8, 4)
+    2.0
+    """
     return float(a / b)
 
 doc.add_section(ops)
