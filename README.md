@@ -64,7 +64,7 @@ def mult(a, b):
 
 @ops("Divides two numbers", returns=float)
 def div(a, b):
-    """>>> mult(8, 4)
+    """>>> div(8, 4)
 2.0"""
     return float(a / b)
 
